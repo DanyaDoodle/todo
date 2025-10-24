@@ -14,11 +14,11 @@ protocol ToDoPresenterProtocol: AnyObject {
 class ToDoPresenter: ToDoPresenterProtocol {
     
     weak var view: ToDoViewProtocol?
-    var interactor: ToDoInteractorProtocol!
-    var router: RouterProtocol!
+    var interactor: ToDoInteractorProtocol?
+    var router: RouterProtocol?
     
     func viewDidLoad() {
-        interactor.getToDo { [weak self] result in
+        interactor?.getToDo { [weak self] result in
             switch result {
             case .success(let todos):
                 self?.didFetchToDos(todos)
