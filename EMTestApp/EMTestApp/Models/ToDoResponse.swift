@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ToDoResponse: Decodable {
+struct ToDoResponse: Codable {
     let todos: [ToDoEntity]
 }

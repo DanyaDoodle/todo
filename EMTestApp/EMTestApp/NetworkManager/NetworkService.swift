@@ -7,34 +7,45 @@
 
 import Foundation
 
+enum NetworkError: Error {
+    case invalidURL
+    case noData
+    case decodingFailed
+    case requestFailed(Error)
+}
+
+enum HTTPMethod: String {
+    case get = "GET"
+}
+
 final class NetworkService {
     
-    //MARK: - Public Methods
+    private var urlManager = URLManager()
     
     func getToDo(completion: @escaping (Result<[ToDoEntity], Error>) -> Void) {
-        guard let url = URLManager.shared.createURL(endpoint: .todos) else {
-            completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+        guard let url = urlManager.createURL(endpoint: .todos) else {
+            completion(.failure(NetworkError.invalidURL))
             return
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(NetworkError.requestFailed(error)))
                 }
                 return
             }
             
             guard let data else {
                 DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data"])))
+                    completion(.failure(NetworkError.noData))
                 }
                 return
             }
-            
+
             do {
                 let response = try JSONDecoder().decode(ToDoResponse.self, from: data)
                 DispatchQueue.main.async {
@@ -42,7 +53,7 @@ final class NetworkService {
                 }
             } catch {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(NetworkError.decodingFailed))
                 }
             }
         }

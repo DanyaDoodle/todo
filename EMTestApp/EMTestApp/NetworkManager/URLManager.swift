@@ -7,13 +7,11 @@
 
 import Foundation
 
-class URLManager {
-    
-    // MARK: - Singleton
-    
-    static let shared = URLManager(); private init() {}
+final class URLManager {
     
     //MARK: - Properties
+    
+    weak var networkService: NetworkService?
     
     private let tunnel = "https://"
     private let server = "dummyjson.com"
