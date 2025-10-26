@@ -14,11 +14,11 @@ enum NetworkError: Error {
     case requestFailed(Error)
 }
 
-enum HTTPMethod: String {
-    case get = "GET"
-}
-
 final class NetworkService {
+    
+    enum HTTPMethod: String {
+        case get = "GET"
+    }
     
     private var urlManager = URLManager()
     
@@ -40,12 +40,10 @@ final class NetworkService {
             }
             
             guard let data else {
-                DispatchQueue.main.async {
-                    completion(.failure(NetworkError.noData))
-                }
+                completion(.failure(NetworkError.noData))
                 return
             }
-
+            
             do {
                 let response = try JSONDecoder().decode(ToDoResponse.self, from: data)
                 DispatchQueue.main.async {

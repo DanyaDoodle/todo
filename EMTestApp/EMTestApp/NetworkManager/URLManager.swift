@@ -10,9 +10,6 @@ import Foundation
 final class URLManager {
     
     //MARK: - Properties
-    
-    weak var networkService: NetworkService?
-    
     private let tunnel = "https://"
     private let server = "dummyjson.com"
     
