@@ -9,6 +9,9 @@ import Foundation
 
 protocol ToDoPresenterProtocol: AnyObject {
     func viewDidLoad()
+    func didAddToDoItem(todoDescription: String)
+    func didAddToDoItem(todo: ToDoItem)
+    func didToggleCompleted(for item: ToDoItem)
 }
 
 class ToDoPresenter: ToDoPresenterProtocol {
@@ -28,8 +31,21 @@ class ToDoPresenter: ToDoPresenterProtocol {
         }
     }
     
-    private func didFetchToDos(_ todos: [ToDoEntity]) {
+    private func didFetchToDos(_ todos: [ToDoItem]) {
         view?.showToDo(todos)
+    }
+    
+    func didAddToDoItem(todo: ToDoItem){
+        view?.showAddToDo(todo: todo)
+    }
+    
+    func didAddToDoItem(todoDescription: String) {
+        interactor?.addToDo(todo: todoDescription)
+    }
+    
+    func didToggleCompleted(for item: ToDoItem) {
+        interactor?.toggleCompleted(item: item)
+        view?.updateToDoItem(item)
     }
 }
 

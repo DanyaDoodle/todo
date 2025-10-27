@@ -17,7 +17,9 @@ class ToDoTableViewAdapter: NSObject {
     
     // MARK: - Properties
     
-    private var todos: [ToDoEntity] = []
+    var onToggleCompleted: ((ToDoItem) -> Void)?
+    
+    private var todos: [ToDoItem] = []
     private let identifier = "ToDoCell"
     private weak var tableView: UITableView?
     
@@ -32,10 +34,27 @@ class ToDoTableViewAdapter: NSObject {
     
     // MARK: - Public Methods
     
-    func update(todos: [ToDoEntity]) {
+    func update(todos: [ToDoItem]) {
         self.todos = todos
         tableView?.reloadData()
     }
+    
+    func toDoCount() -> Int{
+        return todos.count
+    }
+    
+    func add(todo: ToDoItem) {
+        todos.append(todo)
+        tableView?.reloadData()
+    }
+    
+    func update(todo: ToDoItem) {
+        guard let index = todos.firstIndex(where: { $0.id == todo.id }) else { return }
+        todos[index] = todo
+        tableView?.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    }
+
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -54,11 +73,11 @@ extension ToDoTableViewAdapter: UITableViewDataSource {
         
         let todo = todos[indexPath.row]
         cell.configure(toDoText: todo.todo, isCompleted: todo.completed)
+        cell.selectionStyle = .none
         
         cell.onStatusTapped = { [weak self] in
             guard let self = self else { return }
-            self.todos[indexPath.row].completed.toggle()
-            tableView.reloadData()
+            self.onToggleCompleted?(todo)
         }
         
         return cell
