@@ -8,34 +8,27 @@
 import Foundation
 import CoreData
 
-protocol ToDoInteractorProtocol: AnyObject {
-    func getToDo(completion: @escaping (Result<[ToDoItem], Error>) -> Void)
-    func addToDo(todo: String)
-    func toggleCompleted(item: ToDoItem)
-}
+final class ToDoInteractor: ToDoInteractorInputProtocol {
 
-class ToDoInteractor: ToDoInteractorProtocol {
-    
-    var presenter: ToDoPresenterProtocol?
+    weak var output: ToDoInteractorOutputProtocol?
     private var networkService = NetworkService()
     private var context = CoreDataManager.shared.context
-    
-    func getToDo(completion: @escaping (Result<[ToDoItem], Error>) -> Void) {
+
+    func getToDo() {
         let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
         do {
             let localTodos = try context.fetch(request)
             if !localTodos.isEmpty {
-                DispatchQueue.main.async {
-                    completion(.success(localTodos))
-                }
+                output?.didFetchToDos(localTodos)
                 return
             }
         } catch {
-            print("Failed to fetch local todos: \(error)")
+            output?.didFailToFetchToDos(error)
+            return
         }
 
         networkService.getToDo { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let todos):
                 var savedItems: [ToDoItem] = []
@@ -49,26 +42,18 @@ class ToDoInteractor: ToDoInteractorProtocol {
                 }
                 do {
                     try self.context.save()
-                    DispatchQueue.main.async {
-                        completion(.success(savedItems))
-                    }
+                    self.output?.didFetchToDos(savedItems)
                 } catch {
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
+                    self.output?.didFailToFetchToDos(error)
                 }
             case .failure(let error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
+                self.output?.didFailToFetchToDos(error)
             }
         }
     }
 
-    
     func addToDo(todo: String) {
         let newItem = ToDoItem(context: context)
-
         let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
         request.fetchLimit = 1
@@ -84,9 +69,9 @@ class ToDoInteractor: ToDoInteractorProtocol {
         
         do {
             try context.save()
-            presenter?.didAddToDoItem(todo: newItem)
+            output?.didAddToDoItem(newItem)
         } catch {
-            print("Failed to save ToDoItem: \(error)")
+            output?.didFailToFetchToDos(error)
         }
     }
     
@@ -95,7 +80,8 @@ class ToDoInteractor: ToDoInteractorProtocol {
         do {
             try context.save()
         } catch {
-            print("\(error)")
+            print(error)
         }
     }
 }
+
