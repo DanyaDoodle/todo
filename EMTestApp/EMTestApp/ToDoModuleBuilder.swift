@@ -19,6 +19,7 @@ final class ToDoModuleBuilder {
         presenter.interactor = interactor
         presenter.coordinator = coordinator
         interactor.output = presenter
+        coordinator.setOutput(presenter)
         
         return view
     }

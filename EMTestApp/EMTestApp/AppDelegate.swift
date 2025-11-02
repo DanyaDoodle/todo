@@ -12,7 +12,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var appCoordinator: AppCoordinator?
+    private var appCoordinator: AppCoordinator?
 
     func application(
         _ application: UIApplication,

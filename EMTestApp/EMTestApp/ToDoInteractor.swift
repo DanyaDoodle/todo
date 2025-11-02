@@ -79,9 +79,7 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
         item.completed.toggle()
         do {
             try context.save()
-        } catch {
-            print(error)
-        }
+        } catch {}
     }
 }
 

@@ -10,6 +10,7 @@ import UIKit
 final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterViewDelegate {
     
     var output: ToDoViewOutputProtocol?
+    var showAddAllert: (() -> Void)?
 
     private let tableView = UITableView()
     private lazy var adapter = ToDoTableViewAdapter(tableView: tableView)
@@ -42,15 +43,7 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
     }
 
     func didTapAddToDo() {
-        let alert = UIAlertController(title: "Новая задача", message: "Введите описание", preferredStyle: .alert)
-        alert.addTextField { $0.placeholder = "Описание" }
-        let addAction = UIAlertAction(title: "Добавить", style: .default) { [weak self] _ in
-            guard let text = alert.textFields?.first?.text, !text.isEmpty else { return }
-            self?.output?.didTapAddToDoButton(with: text)
-        }
-        alert.addAction(addAction)
-        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
-        present(alert, animated: true)
+        showAddAllert?()
     }
     
     // MARK: - Private
