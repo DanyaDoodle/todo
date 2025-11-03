@@ -2,7 +2,7 @@
 //  ToDoItem+CoreDataProperties.swift
 //  EMTestApp
 //
-//  Created by Даниил Кондауров on 26.10.2025.
+//  Created by Даниил Кондауров on 03.11.2025.
 //
 //
 
@@ -16,10 +16,11 @@ extension ToDoItem {
         return NSFetchRequest<ToDoItem>(entityName: "ToDoItem")
     }
 
+    @NSManaged public var completed: Bool
     @NSManaged public var id: Int64
     @NSManaged public var todo: String
-    @NSManaged public var completed: Bool
     @NSManaged public var userId: Int64
+    @NSManaged public var creationDate: Date?
 
 }
 

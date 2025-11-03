@@ -15,9 +15,19 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
     private let tableView = UITableView()
     private lazy var adapter = ToDoTableViewAdapter(tableView: tableView)
     private let footerView = FooterView()
+    
+    private var navBarAppearance: UINavigationBarAppearance {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .black
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        return appearance
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         setupTableView()
         footerView.delegate = self
         output?.viewDidLoad()
@@ -25,6 +35,16 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
         adapter.onToggleCompleted = { [weak self] todo in
             self?.output?.didToggleCompleted(for: todo)
         }
+        
+        adapter.onDelete = { [weak self] todo in
+            self?.output?.didTapDelete(for: todo)
+        }
+        
+        adapter.onEdit = { [weak self] todo in
+            guard let self else { return }
+            self.output?.didTapEdit(todo: todo)
+        }
+
     }
 
     func showToDoList(_ todos: [ToDoItem]) {
@@ -46,7 +66,19 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
         showAddAllert?()
     }
     
+    func showDeleteToDoItem(_ todo: ToDoItem) {
+        adapter.delete(todo: todo)
+        footerView.footerConfigure(with: adapter.toDoCount())
+    }
+    
     // MARK: - Private
+    
+    private func setupNavigationBar() {
+        title = "Задачи"
+        navigationController?.navigationBar.standardAppearance = navBarAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
     
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false

@@ -66,6 +66,7 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
         newItem.todo = todo
         newItem.completed = false
         newItem.userId = 1
+        newItem.creationDate = Date()
         
         do {
             try context.save()
@@ -79,6 +80,14 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
         item.completed.toggle()
         do {
             try context.save()
+        } catch {}
+    }
+    
+    func deleteItem(item: ToDoItem) {
+        context.delete(item)
+        do {
+            try context.save()
+            output?.didDeleteToDoItem(item)
         } catch {}
     }
 }

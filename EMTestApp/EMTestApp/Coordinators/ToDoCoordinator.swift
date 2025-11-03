@@ -46,4 +46,14 @@ final class ToDoCoordinator: Coordinator {
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
         navigationController.present(alert, animated: true)
     }
+    
+    func showToDoPage(for todo: ToDoItem) {
+        let pageCoordinator = ToDoPageCoordinator(navigationController: navigationController)
+        pageCoordinator.todoId = todo.id
+        navigationController.pushViewController(
+            ToDoPageModuleBuilder.build(coordinator: pageCoordinator, todoId: todo.id),
+            animated: false
+        )
+    }
+
 }
