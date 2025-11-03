@@ -30,12 +30,12 @@ final class ToDoCoordinator: Coordinator {
     func start() {
         guard let toDoVC = ToDoModuleBuilder.build(coordinator: self) as? ToDoViewController else { return }
         toDoVC.showAddAllert = { [weak self] in
-            self?.didTapAddToDo()
+            self?.showAddItemModal()
         }
         navigationController.setViewControllers([toDoVC], animated: false)
     }
     
-    func didTapAddToDo() {
+    func showAddItemModal() {
         let alert = UIAlertController(title: "Новая задача", message: "Введите описание", preferredStyle: .alert)
         alert.addTextField { $0.placeholder = "Описание" }
         let addAction = UIAlertAction(title: "Добавить", style: .default) { [weak self] _ in
