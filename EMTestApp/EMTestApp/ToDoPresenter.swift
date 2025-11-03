@@ -7,29 +7,35 @@
 
 import Foundation
 
-protocol ToDoPresenterProtocol: AnyObject {
-    func viewDidLoad()
-}
+final class ToDoPresenter: ToDoPresenterInputProtocol, ToDoInteractorOutputProtocol, ToDoViewOutputProtocol {
+    
+    weak var view: ToDoViewInputProtocol?
+    var interactor: ToDoInteractorInputProtocol?
+    weak var coordinator: ToDoCoordinator?
 
-class ToDoPresenter: ToDoPresenterProtocol {
-    
-    weak var view: ToDoViewProtocol?
-    var interactor: ToDoInteractorProtocol?
-    var router: RouterProtocol?
-    
     func viewDidLoad() {
-        interactor?.getToDo { [weak self] result in
-            switch result {
-            case .success(let todos):
-                self?.didFetchToDos(todos)
-            case .failure(let error):
-                print("Failed to fetch todos: \(error.localizedDescription)")
-            }
-        }
+        interactor?.getToDo()
     }
     
-    private func didFetchToDos(_ todos: [ToDoEntity]) {
-        view?.showToDo(todos)
+    func didTapAddToDoButton(with text: String) {
+        interactor?.addToDo(todo: text)
+    }
+    
+    func didToggleCompleted(for item: ToDoItem) {
+        interactor?.toggleCompleted(item: item)
+        view?.updateToDoItem(item)
+    }
+
+    func didFetchToDos(_ todos: [ToDoItem]) {
+        view?.showToDoList(todos)
+    }
+    
+    func didFailToFetchToDos(_ error: Error) {
+        print("Error: \(error.localizedDescription)")
+    }
+    
+    func didAddToDoItem(_ todo: ToDoItem) {
+        view?.showAddedToDoItem(todo)
     }
 }
 

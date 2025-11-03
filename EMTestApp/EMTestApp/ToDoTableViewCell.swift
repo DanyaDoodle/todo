@@ -21,7 +21,7 @@ class ToDoTableViewCell: UITableViewCell {
     
     private let toDoTextView: UITextView = {
         let textView = UITextView()
-        textView.font = .systemFont(ofSize: 12, weight: .regular)
+        textView.font = .systemFont(ofSize: 14, weight: .regular)
         textView.textColor = .white
         textView.isScrollEnabled = false
         textView.isEditable = false
@@ -79,7 +79,7 @@ class ToDoTableViewCell: UITableViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             toDoTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            toDoTextView.leadingAnchor.constraint(equalTo: statusImageView.trailingAnchor, constant: 10),
+            toDoTextView.leadingAnchor.constraint(equalTo: statusImageView.trailingAnchor, constant: 5),
             toDoTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             dateLabel.topAnchor.constraint(equalTo: toDoTextView.bottomAnchor, constant: 8),
@@ -95,7 +95,7 @@ class ToDoTableViewCell: UITableViewCell {
         let tap = UITapGestureRecognizer(target: self, action: #selector(statusTapped))
         statusImageView.addGestureRecognizer(tap)
     }
-
+    
     @objc private func statusTapped() {
         onStatusTapped?()
     }
@@ -103,9 +103,21 @@ class ToDoTableViewCell: UITableViewCell {
     // MARK: - Configure
     
     func configure(toDoText: String, isCompleted: Bool) {
-        titleLabel.text = "TEST TITLE"
+        let attributes: [NSAttributedString.Key: Any] = isCompleted
+        ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue]
+        : [:]
+        
+        titleLabel.attributedText = NSAttributedString(
+            string: "TEST TITLE",
+            attributes: attributes
+        )
+        
         dateLabel.text = "22/22/22"
         statusImageView.image = isCompleted ? UIImage(named: "done") : UIImage(named: "none")
         toDoTextView.text = toDoText
+        
+        dateLabel.textColor = isCompleted ? UIColor.systemGray : UIColor.white
+        titleLabel.textColor = isCompleted ? UIColor.systemGray : UIColor.white
+        toDoTextView.textColor = isCompleted ? UIColor.systemGray : UIColor.white
     }
 }
