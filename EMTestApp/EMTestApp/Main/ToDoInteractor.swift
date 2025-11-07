@@ -18,6 +18,16 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
         let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
         do {
             let localTodos = try context.fetch(request)
+            var updated = false
+            for item in localTodos {
+                if item.title.isEmpty {
+                    item.title = "Новая задача"
+                    updated = true
+                }
+            }
+            if updated {
+                try context.save()
+            }
             if !localTodos.isEmpty {
                 output?.didFetchToDos(localTodos)
                 return
@@ -34,10 +44,12 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
                 var savedItems: [ToDoItem] = []
                 for todo in todos {
                     let item = ToDoItem(context: self.context)
+                    item.title = "Новая задача"
                     item.id = Int64(todo.id)
                     item.todo = todo.todo
                     item.completed = todo.completed
                     item.userId = Int64(todo.userId)
+                    item.creationDate = Date()
                     savedItems.append(item)
                 }
                 do {
@@ -66,6 +78,7 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
         newItem.todo = todo
         newItem.completed = false
         newItem.userId = 1
+        newItem.title = "Новая задача"
         newItem.creationDate = Date()
         
         do {
@@ -88,7 +101,9 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
         do {
             try context.save()
             output?.didDeleteToDoItem(item)
-        } catch {}
+        } catch {
+            print(error)
+        }
     }
 }
 

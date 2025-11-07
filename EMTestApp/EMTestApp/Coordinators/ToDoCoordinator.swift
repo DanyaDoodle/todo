@@ -49,7 +49,12 @@ final class ToDoCoordinator: Coordinator {
     
     func showToDoPage(for todo: ToDoItem) {
         let pageCoordinator = ToDoPageCoordinator(navigationController: navigationController)
-        pageCoordinator.todoId = todo.id
+        
+        pageCoordinator.onTodoUpdated = { [weak self] updatedTodo in
+            guard let mainVC = self?.navigationController.viewControllers.first as? ToDoViewController else { return }
+            mainVC.updateToDoItem(updatedTodo)
+        }
+        
         navigationController.pushViewController(
             ToDoPageModuleBuilder.build(coordinator: pageCoordinator, todoId: todo.id),
             animated: false

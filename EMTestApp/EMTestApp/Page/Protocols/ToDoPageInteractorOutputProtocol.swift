@@ -10,4 +10,6 @@ import Foundation
 protocol ToDoPageInteractorOutputProtocol: AnyObject {
     func didFetchToDoDetail(todo: ToDoItem)
     func didFailToFetchToDoDetail(error: Error)
+    func didUpdate(todo: ToDoItem)
+    func didFailToFetchToDos(error: Error)
 }

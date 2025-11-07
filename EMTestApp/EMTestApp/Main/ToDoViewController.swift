@@ -41,8 +41,7 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
         }
         
         adapter.onEdit = { [weak self] todo in
-            guard let self else { return }
-            self.output?.didTapEdit(todo: todo)
+            self?.output?.didTapEdit(todo: todo)
         }
 
     }

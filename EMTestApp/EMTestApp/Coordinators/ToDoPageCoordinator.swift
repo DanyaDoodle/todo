@@ -12,8 +12,8 @@ final class ToDoPageCoordinator {
     // MARK: - Properties
     
     var navigationController: UINavigationController
-    var todoId: Int64?
     var result: ((StartScreen) -> Void)?
+    var onTodoUpdated: ((ToDoItem) -> Void)?
     private var output: ToDoViewOutputProtocol?
     
     
@@ -26,8 +26,7 @@ final class ToDoPageCoordinator {
     // MARK: - Start
     
     func start() {
-        guard let id = todoId else { return }
-        let todoPageVC = ToDoPageModuleBuilder.build(coordinator: self, todoId: id)
+        let todoPageVC = ToDoPageModuleBuilder.build(coordinator: self, todoId: 0)
         navigationController.pushViewController(todoPageVC, animated: true)
     }
 }

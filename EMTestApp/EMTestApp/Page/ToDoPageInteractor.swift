@@ -25,4 +25,15 @@ final class ToDoPageInteractor: ToDoPageInteractorInputProtocol {
             output?.didFailToFetchToDoDetail(error: error)
         }
     }
+    
+    func updateToDoText(todo: ToDoItem, with newText: String) {
+        todo.todo = newText
+        do {
+            try context.save()
+            output?.didUpdate(todo: todo)
+        }
+        catch {
+            output?.didFailToFetchToDos(error: error)
+        }
+    }
 }

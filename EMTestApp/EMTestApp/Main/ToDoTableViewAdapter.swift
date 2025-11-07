@@ -79,7 +79,7 @@ extension ToDoTableViewAdapter: UITableViewDataSource, UITableViewDelegate {
         }
         
         let todo = todos[indexPath.row]
-        cell.configure(toDoText: todo.todo, isCompleted: todo.completed, index: indexPath.row + 1, creationDate: todo.creationDate)
+        cell.configure(item: todo)
         cell.selectionStyle = .none
         
         cell.onStatusTapped = { [weak self] in

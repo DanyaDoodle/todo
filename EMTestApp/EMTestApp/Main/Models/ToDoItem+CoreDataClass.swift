@@ -2,7 +2,7 @@
 //  ToDoItem+CoreDataClass.swift
 //  EMTestApp
 //
-//  Created by Даниил Кондауров on 03.11.2025.
+//  Created by Даниил Кондауров on 04.11.2025.
 //
 //
 

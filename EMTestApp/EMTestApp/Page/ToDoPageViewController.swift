@@ -11,6 +11,7 @@ class ToDoPageViewController: UIViewController, ToDoPageViewInputProtocol, UITex
     
     var output: ToDoPageViewOutputProtocol?
     var todoId: Int64?
+    private var currentItem: ToDoItem?
 
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -48,12 +49,20 @@ class ToDoPageViewController: UIViewController, ToDoPageViewInputProtocol, UITex
         setupUI()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let todo = currentItem else { return }
+        
+        if toDoTextView.text != todo.todo {
+            output?.didEdit(todo: todo, newText: toDoTextView.text)
+        }
+    }
+    
     func displayToDoDetail(_ todo: ToDoItem) {
-        titleLabel.text = "Новая задача \(todo.id)"
+        currentItem = todo
+        titleLabel.text = todo.title
         toDoTextView.text = todo.todo
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yy"
-        dateLabel.text = formatter.string(from: todo.creationDate ?? formatter.date(from: "30/10/25")!)
+        dateLabel.text = todo.creationDateString
     }
     
     func displayError(_ error: Error) {
