@@ -26,6 +26,7 @@ class ToDoTableViewCell: UITableViewCell {
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.backgroundColor = .clear
+        textView.textContainer.maximumNumberOfLines = 0
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -101,32 +102,6 @@ class ToDoTableViewCell: UITableViewCell {
     }
     
     // MARK: - Configure
-    
-    //    func configure(toDoText: String, isCompleted: Bool, index: Int, creationDate: Date?) {
-    //        let title = "Новая задача \(index)"
-    //        let attributes: [NSAttributedString.Key: Any] = isCompleted
-    //            ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue]
-    //            : [:]
-    //
-    //        titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
-    //
-    //        let dateToShow: String
-    //        if let date = creationDate {
-    //            let formatter = DateFormatter()
-    //            formatter.dateFormat = "dd/MM/yy"
-    //            dateToShow = formatter.string(from: date)
-    //        } else {
-    //            dateToShow = "30/10/25"
-    //        }
-    //
-    //        dateLabel.text = dateToShow
-    //        statusImageView.image = isCompleted ? UIImage(named: "done") : UIImage(named: "none")
-    //        toDoTextView.text = toDoText
-    //
-    //        dateLabel.textColor = isCompleted ? .systemGray : .white
-    //        titleLabel.textColor = isCompleted ? .systemGray : .white
-    //        toDoTextView.textColor = isCompleted ? .systemGray : .white
-    //    }
     
     func configure(item: ToDoItem) {
         

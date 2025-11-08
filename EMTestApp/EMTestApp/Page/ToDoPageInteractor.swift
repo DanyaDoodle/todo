@@ -12,24 +12,21 @@ final class ToDoPageInteractor: ToDoPageInteractorInputProtocol {
     
     weak var output: ToDoPageInteractorOutputProtocol?
     private let context = CoreDataManager.shared.context
+    private var todo: ToDoItem
     
-    func fetchToDoDetail(by id: Int64) {
-        let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %d", id)
-        request.fetchLimit = 1
-        do {
-            if let todo = try context.fetch(request).first {
-                output?.didFetchToDoDetail(todo: todo)
-            }
-        } catch {
-            output?.didFailToFetchToDoDetail(error: error)
-        }
+    init(todo: ToDoItem) {
+         self.todo = todo
+     }
+    
+    func fetchToDoDetail() {
+        output?.didFetchToDoDetail(todo: todo)
     }
     
     func updateToDoText(todo: ToDoItem, with newText: String) {
         todo.todo = newText
         do {
             try context.save()
+            context.refresh(todo, mergeChanges: true)
             output?.didUpdate(todo: todo)
         }
         catch {

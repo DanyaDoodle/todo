@@ -13,8 +13,8 @@ final class ToDoPagePresenter: ToDoPagePresenterInputProtocol, ToDoPageInteracto
     var interactor: ToDoPageInteractorInputProtocol?
     weak var coordinator: ToDoPageCoordinator?
     
-    func viewDidLoad(todoId: Int64) {
-        interactor?.fetchToDoDetail(by: todoId)
+    func viewDidLoad() {
+        interactor?.fetchToDoDetail()
     }
     
     func didFetchToDoDetail(todo: ToDoItem) {

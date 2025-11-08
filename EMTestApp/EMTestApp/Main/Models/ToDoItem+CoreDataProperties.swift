@@ -28,12 +28,3 @@ extension ToDoItem {
 extension ToDoItem : Identifiable {
     
 }
-
-extension ToDoItem {
-    var creationDateString: String {
-        guard let date = creationDate else { return "30/10/25" }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yy"
-        return formatter.string(from: date)
-    }
-}

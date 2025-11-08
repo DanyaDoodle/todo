@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ToDoPagePresenterInputProtocol: AnyObject {
-    func viewDidLoad(todoId: Int64)
+    func viewDidLoad()
 }

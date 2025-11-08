@@ -10,9 +10,7 @@ import UIKit
 class ToDoPageViewController: UIViewController, ToDoPageViewInputProtocol, UITextViewDelegate {
     
     var output: ToDoPageViewOutputProtocol?
-    var todoId: Int64?
     private var currentItem: ToDoItem?
-
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 34, weight: .medium)
@@ -39,12 +37,10 @@ class ToDoPageViewController: UIViewController, ToDoPageViewInputProtocol, UITex
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let todoId {
-            output?.viewDidLoad(todoId: todoId)
-        }
+        output?.viewDidLoad()
         toDoTextView.delegate = self
         setupUI()
     }

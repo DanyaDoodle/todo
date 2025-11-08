@@ -8,6 +8,6 @@
 import Foundation
 
 protocol ToDoPageViewOutputProtocol: AnyObject {
-    func viewDidLoad(todoId: Int64)
+    func viewDidLoad()
     func didEdit(todo: ToDoItem, newText: String)
 }

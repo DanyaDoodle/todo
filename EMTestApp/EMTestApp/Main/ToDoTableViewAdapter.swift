@@ -54,7 +54,12 @@ class ToDoTableViewAdapter: NSObject {
     func update(todo: ToDoItem) {
         guard let index = todos.firstIndex(where: { $0.id == todo.id }) else { return }
         todos[index] = todo
-        tableView?.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        let indexPath = IndexPath(row: index, section: 0)
+        if let cell = tableView?.cellForRow(at: indexPath) as? Cell {
+            cell.configure(item: todo)
+        } else {
+            tableView?.reloadRows(at: [indexPath], with: .none)
+        }
     }
     
     func delete(todo: ToDoItem) {

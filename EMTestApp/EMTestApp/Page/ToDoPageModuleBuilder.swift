@@ -8,12 +8,10 @@
 import UIKit
 
 final class ToDoPageModuleBuilder {
-    static func build(coordinator: ToDoPageCoordinator, todoId: Int64) -> UIViewController {
+    static func build(coordinator: ToDoPageCoordinator, todo: ToDoItem) -> UIViewController {
         let view = ToDoPageViewController()
-        view.todoId = todoId
-
         let presenter = ToDoPagePresenter()
-        let interactor = ToDoPageInteractor()
+        let interactor = ToDoPageInteractor(todo: todo)
 
         view.output = presenter
         presenter.view = view
