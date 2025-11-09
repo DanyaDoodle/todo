@@ -15,20 +15,19 @@ final class ToDoPageCoordinator {
     var result: ((StartScreen) -> Void)?
     var onTodoUpdated: ((ToDoItem) -> Void)?
     private var output: ToDoViewOutputProtocol?
-    private var todoItem: ToDoItem
-    
+    private var todoId: Int64
     
     // MARK: - Init
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, todoId: Int64) {
         self.navigationController = navigationController
-        self.todoItem = ToDoItem()
+        self.todoId = todoId
     }
     
     // MARK: - Start
     
     func start() {
-        let todoPageVC = ToDoPageModuleBuilder.build(coordinator: self, todo: todoItem)
+        let todoPageVC = ToDoPageModuleBuilder.build(coordinator: self, todoId: todoId)
         navigationController.pushViewController(todoPageVC, animated: true)
     }
 }

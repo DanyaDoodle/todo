@@ -8,13 +8,14 @@
 import Foundation
 
 final class ToDoPagePresenter: ToDoPagePresenterInputProtocol, ToDoPageInteractorOutputProtocol, ToDoPageViewOutputProtocol{
-
+    
     weak var view: ToDoPageViewInputProtocol?
     var interactor: ToDoPageInteractorInputProtocol?
     weak var coordinator: ToDoPageCoordinator?
+    var todoId: Int64 = 0
     
     func viewDidLoad() {
-        interactor?.fetchToDoDetail()
+        interactor?.fetchToDoDetail(by: todoId)
     }
     
     func didFetchToDoDetail(todo: ToDoItem) {
