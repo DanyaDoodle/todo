@@ -14,6 +14,7 @@ final class ToDoCoordinator: Coordinator {
     var navigationController: UINavigationController
     var result: ((StartScreen) -> Void)?
     private var output: ToDoViewOutputProtocol?
+    private var pageCoordinator: ToDoPageCoordinator?
     
     // MARK: - Init
     
@@ -46,4 +47,18 @@ final class ToDoCoordinator: Coordinator {
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
         navigationController.present(alert, animated: true)
     }
+    
+    func showToDoPage(for todo: ToDoItem) {
+        pageCoordinator = ToDoPageCoordinator(navigationController: navigationController, todoId: todo.id)
+        
+        pageCoordinator?.onTodoUpdated = { [weak self] updateTodo in
+            guard let mainVC = self?.navigationController.viewControllers.first as? ToDoViewController else { return }
+            mainVC.updateToDoItem(updateTodo)
+        }
+        
+        guard let pageCoordinator = pageCoordinator else { return }
+        navigationController.pushViewController(
+            ToDoPageModuleBuilder.build(coordinator: pageCoordinator, todoId: todo.id ),animated: false)
+    }
 }
+            

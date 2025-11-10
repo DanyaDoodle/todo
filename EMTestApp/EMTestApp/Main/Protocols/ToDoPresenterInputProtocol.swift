@@ -11,4 +11,5 @@ protocol ToDoPresenterInputProtocol: AnyObject {
     func viewDidLoad()
     func didTapAddToDoButton(with text: String)
     func didToggleCompleted(for item: ToDoItem)
+    func didTapDelete(for item: ToDoItem)
 }

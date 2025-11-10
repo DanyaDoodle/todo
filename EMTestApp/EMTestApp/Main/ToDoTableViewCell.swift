@@ -26,6 +26,7 @@ class ToDoTableViewCell: UITableViewCell {
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.backgroundColor = .clear
+        textView.textContainer.maximumNumberOfLines = 0
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -102,22 +103,22 @@ class ToDoTableViewCell: UITableViewCell {
     
     // MARK: - Configure
     
-    func configure(toDoText: String, isCompleted: Bool) {
-        let attributes: [NSAttributedString.Key: Any] = isCompleted
+    func configure(item: ToDoItem) {
+        
+        let attributes: [NSAttributedString.Key: Any] = item.completed
         ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue]
         : [:]
         
-        titleLabel.attributedText = NSAttributedString(
-            string: "TEST TITLE",
-            attributes: attributes
-        )
+        titleLabel.attributedText = NSAttributedString(string: item.title, attributes: attributes)
+        dateLabel.text = item.creationDateString
+        statusImageView.image = item.completed ? UIImage(named: "done") : UIImage(named: "none")
+        toDoTextView.text = item.todo
         
-        dateLabel.text = "22/22/22"
-        statusImageView.image = isCompleted ? UIImage(named: "done") : UIImage(named: "none")
-        toDoTextView.text = toDoText
-        
-        dateLabel.textColor = isCompleted ? UIColor.systemGray : UIColor.white
-        titleLabel.textColor = isCompleted ? UIColor.systemGray : UIColor.white
-        toDoTextView.textColor = isCompleted ? UIColor.systemGray : UIColor.white
+        let color: UIColor = item.completed ? .systemGray : .white
+        titleLabel.textColor = color
+        toDoTextView.textColor = color
+        dateLabel.textColor = color
     }
 }
+
+

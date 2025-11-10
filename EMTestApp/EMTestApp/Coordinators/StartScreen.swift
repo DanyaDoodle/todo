@@ -9,4 +9,5 @@ import Foundation
 
 enum StartScreen {
     case toDoMainScreen
+    case toDoPageScreen
 }

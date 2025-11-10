@@ -37,5 +37,18 @@ final class ToDoPresenter: ToDoPresenterInputProtocol, ToDoInteractorOutputProto
     func didAddToDoItem(_ todo: ToDoItem) {
         view?.showAddedToDoItem(todo)
     }
+    
+    func didDeleteToDoItem(_ todo: ToDoItem) {
+        view?.showDeleteToDoItem(todo)
+    }
+    
+    func didTapDelete(for item: ToDoItem) {
+        interactor?.deleteItem(item: item)
+    }
+    
+    func didTapEdit(todo: ToDoItem) {
+        coordinator?.showToDoPage(for: todo)
+    }
+
 }
 

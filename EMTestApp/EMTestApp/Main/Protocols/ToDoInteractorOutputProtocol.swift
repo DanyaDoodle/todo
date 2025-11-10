@@ -11,4 +11,5 @@ protocol ToDoInteractorOutputProtocol: AnyObject {
     func didFetchToDos(_ todos: [ToDoItem])
     func didFailToFetchToDos(_ error: Error)
     func didAddToDoItem(_ todo: ToDoItem)
+    func didDeleteToDoItem(_ todo: ToDoItem)
 }
