@@ -50,5 +50,20 @@ final class ToDoPresenter: ToDoPresenterInputProtocol, ToDoInteractorOutputProto
         coordinator?.showToDoPage(for: todo)
     }
 
+    func didSearchItems(_ todos: [ToDoItem]) {
+        view?.showToDoList(todos)
+    }
+    
+    func didTapSearch(with text: String) {
+        interactor?.searchItem(todo: text)
+    }
+    
+    func didUpdateSearchText(_ text: String) {
+        if text.isEmpty {
+            interactor?.getToDo()
+        } else {
+            interactor?.searchItem(todo: text) 
+        }
+    }
 }
 

@@ -13,4 +13,5 @@ protocol ToDoViewOutputProtocol: AnyObject {
     func didToggleCompleted(for item: ToDoItem)
     func didTapDelete(for item: ToDoItem)
     func didTapEdit(todo: ToDoItem)
+    func didUpdateSearchText(_ text: String)
 }

@@ -12,4 +12,5 @@ protocol ToDoInteractorInputProtocol: AnyObject {
     func addToDo(todo: String)
     func toggleCompleted(item: ToDoItem)
     func deleteItem(item: ToDoItem)
+    func searchItem(todo: String)
 }
