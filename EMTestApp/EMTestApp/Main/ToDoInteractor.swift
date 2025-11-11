@@ -105,5 +105,17 @@ final class ToDoInteractor: ToDoInteractorInputProtocol {
             print(error)
         }
     }
+    
+    func searchItem(todo: String) {
+        let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
+        request.predicate = NSPredicate(format: "todo CONTAINS[cd] %@", todo)
+        
+        do {
+            let results = try context.fetch(request)
+            output?.didSearchItems(results)
+        } catch {
+            output?.didFailToFetchToDos(error)
+        }
+    }
 }
 

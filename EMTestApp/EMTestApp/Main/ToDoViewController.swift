@@ -20,16 +20,26 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .black
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         return appearance
     }
+    
+    private let searchController: UISearchController = {
+        let search = UISearchController()
+        search.obscuresBackgroundDuringPresentation = false
+        search.searchBar.placeholder = "Search"
+        search.searchBar.sizeToFit()
+        search.searchBar.barStyle = .black
+        return search
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
         setupTableView()
         footerView.delegate = self
+        searchController.searchBar.delegate = self
         output?.viewDidLoad()
 
         adapter.onToggleCompleted = { [weak self] todo in
@@ -77,6 +87,7 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.searchController = searchController
     }
     
     private func setupTableView() {
@@ -99,5 +110,15 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: footerView.topAnchor)
         ])
+    }
+}
+
+extension ToDoViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        output?.didUpdateSearchText(searchText)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        output?.didUpdateSearchText("")
     }
 }

@@ -12,4 +12,5 @@ protocol ToDoPresenterInputProtocol: AnyObject {
     func didTapAddToDoButton(with text: String)
     func didToggleCompleted(for item: ToDoItem)
     func didTapDelete(for item: ToDoItem)
+    func didTapSearch(with text: String)
 }
