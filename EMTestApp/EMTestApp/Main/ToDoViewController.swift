@@ -30,7 +30,7 @@ final class ToDoViewController: UIViewController, ToDoViewInputProtocol, FooterV
         search.obscuresBackgroundDuringPresentation = false
         search.searchBar.placeholder = "Search"
         search.searchBar.sizeToFit()
-        search.searchBar.searchTextField.textColor = .yellow
+        search.searchBar.barStyle = .black
         return search
     }()
 
